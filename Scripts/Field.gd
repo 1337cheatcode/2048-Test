@@ -3,21 +3,24 @@ extends Area2D
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
-var blocc_array:Array
-var swipe_start
-var min_drag = 72.0
+var blocc_array:Dictionary
+var swipe_start:Vector2
+var min_drag:float = 72
+var r4c4_vacant:Array
 
 onready var preblocc = preload("res://Scenes/Blocc.tscn")
 onready var area
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	for i in range(4):
+		for j in range(4):
+			r4c4_vacant.append("%d%d"%[i,j])
+	spawn_test() # Replace with function body.
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
-	if len(blocc_array)<4:
-		spawn_test()
+	pass
 
 func _input(event):
 	if event is InputEventScreenTouch && event.pressed:
@@ -43,19 +46,17 @@ func spawn_blocc(row:int,column:int,digit:int):
 	blocc.position.x = pos_calc(row)
 	blocc.position.y = pos_calc(column)
 	blocc.get_child(0).get_child(0).bb_be_numbah(digit)
+	blocc_array["%d%d"%[row,column]]=blocc
 	add_child(blocc)
 
 func spawn_test():
-	var r = randi()%4
-	var c = randi()%4
+	var rc = r4c4_vacant[randi()%len(r4c4_vacant)]
+	r4c4_vacant.erase(rc)
 	var d = (1+randi()%2)*2
-	for i in blocc_array:
-		if r==i[0] && c==i[1]:
-			return
-	blocc_array.append([r,c,d])
-	spawn_blocc(r,c,d)
+	blocc_array[rc]=d
+	spawn_blocc(str2var(rc[0]),str2var(rc[1]),d)
 
-func pos_calc(n:int):
+func pos_calc(n:int)->float:
 	return(-125 if n==0 else 125 if n==3 else 0)+(-62.5 if n<2 else 62.5)+(n-1.5)*20
 
 func swipe(start,end):
@@ -71,5 +72,26 @@ func swipe(start,end):
 				print('d')
 			else:
 				print('u')
-func is_in_area(pos):
+		spawn_test()
+
+func is_in_area(pos)->bool:
 	return true if abs(pos.y-640)<450 && abs(pos.x-360)<300 else false
+
+func left():
+	for i in range(3,-1,-1):
+		for j in range(3):
+			var rowcol:String = "%d%d"%[i,j]
+			for k in range(j,4):
+				var slidrc:String = "%d%d"%[i,k]
+				if slidrc in blocc_array:
+					if rowcol in blocc_array && blocc_array[rowcol]==blocc_array[slidrc]:
+						blocc_array[rowcol]
+						break
+					else:
+						blocc_array[rowcol]
+
+func h_gravity(i,j):
+	pass
+
+func v_gravity(i,j):
+	pass
