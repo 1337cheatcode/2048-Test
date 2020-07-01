@@ -1,0 +1,11 @@
+[gd_resource type="Theme" load_steps=3 format=2]
+
+[ext_resource path="res://Assets/Fonts/NotoSansUI_Bold.ttf" type="DynamicFontData" id=1]
+
+[sub_resource type="DynamicFont" id=1]
+size = 96
+extra_spacing_top = -4
+font_data = ExtResource( 1 )
+
+[resource]
+RichTextLabel/fonts/bold_font = SubResource( 1 )

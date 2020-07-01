@@ -1,0 +1,48 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://admob-lib/admob.gd" type="Script" id=1]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Button
+
+# Declare member variables here. Examples:
+# var a = 2
+# var b = \"text\"
+onready var blocc_preload = preload(\"res://Scenes/Blocc.tscn\")
+onready var admob = $Admob
+
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	# Replace with function body.
+	admob.load_banner()
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+#func _process(delta):
+#	pass
+
+func _on_Node2D_pressed():
+	# Replace with function body.
+	var blocc = blocc_preload.instance()
+	blocc.position.x = randf()*720
+	blocc.position.y = randf()*1280
+	blocc.get_child(0).get_child(0).bb_be_numbah((1+randi()%2)*2)
+	add_child(blocc)
+"
+
+[node name="Node2D" type="Button"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+focus_mode = 1
+enabled_focus_mode = 1
+keep_pressed_outside = true
+text = "Shokan Summon"
+script = SubResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Admob" type="Node" parent="."]
+script = ExtResource( 1 )
+banner_on_top = false
+banner_id = "ca-app-pub-6630088902081842/6934646344"
+[connection signal="pressed" from="." to="." method="_on_Node2D_pressed"]

@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://admob-lib/admob.gd" type="Script" id=1]
+
+[node name="Soloplay" type="Node"]
+script = ExtResource( 1 )
+banner_on_top = false
+banner_id = "ca-app-pub-6630088902081842/6934646344"
